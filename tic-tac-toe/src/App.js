@@ -1,6 +1,13 @@
 // default: main function of this file
 function Square({ value }) {
-  return <button className="square">{value}</button>;
+  function handleClick() {
+    console.log('Clicked!');
+  }
+  return (
+    <button className="square" onClick={handleClick}>
+      {value}
+    </button>
+  );
 }
 
 export default function Board() {
