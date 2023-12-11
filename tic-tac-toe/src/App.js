@@ -12,13 +12,14 @@ function Square({ value, onSquareClick }) {
 
 // default: main function of this file
 export default function Board() {
-  const [xIsNext, setxIsNext] = useState(true);
+  const [xIsNext, setXisNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
   console.log(squares);
 
   function handleClick(i) {
-    // Once the box has been taken, it cannot change to X or O
-    if (squares[i]) {
+    // Once the box has been taken or, it cannot change to X or O
+    if (squares[i] || calculateWinner(squares)) {
+      // true (if box is taken) || true (if there's a winner)
       return;
     }
     // Create a copy of the array
@@ -32,10 +33,19 @@ export default function Board() {
     }
     // Set the squares to new array: nextSquares
     setSquares(nextSquares);
-    setxIsNext(!xIsNext);
+    setXisNext(!xIsNext);
+  }
+  // Declare a winner
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = `Winner: ${winner}`;
+  } else {
+    status = `Next player: ${xIsNext ? 'X' : 'O'}`;
   }
   return (
     <>
+      <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -53,4 +63,25 @@ export default function Board() {
       </div>
     </>
   );
+}
+function calculateWinner(squares) {
+  // winning lines data
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      // Return O or X as winner
+      return squares[a];
+    }
+  }
+  return null;
 }
