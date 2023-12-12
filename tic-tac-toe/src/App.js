@@ -1,7 +1,6 @@
 // call from your component to let it “remember” things
 import { useState } from 'react';
 
-// default: main function of this file
 function Square({ value, onSquareClick }) {
   return (
     <button className="square" onClick={onSquareClick}>
@@ -10,31 +9,24 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-// default: main function of this file
-export default function Board() {
-  const [xIsNext, setXisNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  console.log(squares);
-
+function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     // Once the box has been taken or, it cannot change to X or O
-    if (squares[i] || calculateWinner(squares)) {
+    if (calculateWinner(squares) || squares[i]) {
       // true (if box is taken) || true (if there's a winner)
       return;
     }
     // Create a copy of the array
     const nextSquares = squares.slice();
-
     if (xIsNext) {
       // Set the box where it got clicked to the value of X
       nextSquares[i] = 'X';
     } else {
       nextSquares[i] = 'O';
     }
-    // Set the squares to new array: nextSquares
-    setSquares(nextSquares);
-    setXisNext(!xIsNext);
+    onPlay(nextSquares);
   }
+
   // Declare a winner
   const winner = calculateWinner(squares);
   let status;
@@ -43,6 +35,7 @@ export default function Board() {
   } else {
     status = `Next player: ${xIsNext ? 'X' : 'O'}`;
   }
+
   return (
     <>
       <div className="status">{status}</div>
@@ -64,6 +57,29 @@ export default function Board() {
     </>
   );
 }
+
+export default function Game() {
+  const [xIsNext, setXisNext] = useState(true);
+  const [history, setHistory] = useState(Array(9).fill(null));
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextSquares) {
+    setHistory([...history, nextSquares]);
+    setXisNext(!xIsNext);
+  }
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{/* TODO */}</ol>
+      </div>
+    </div>
+  );
+}
+
 function calculateWinner(squares) {
   // winning lines data
   const lines = [
