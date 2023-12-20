@@ -53,3 +53,13 @@ press button `+`
 
 ## Get new item
 Press button `body` then `raw` and `send`
+
+# Pages
+## /
+## /items
+### get
+- show all items
+### post
+- create new item (in postman for now cuz there's no UI)
+## /items/:id
+- get one itme
