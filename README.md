@@ -10,6 +10,7 @@ Changed the storage path and log path in the `.config` file
 ```
 sudo brew services start mongodb-community@7.0
 ```
+- normally you don't need `sudo` but i need it somehow
 
 #### To stop a [`mongod`](https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod) running as a macOS service, use the following command as needed:
 
