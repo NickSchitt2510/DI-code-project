@@ -64,3 +64,10 @@ Press button `body` then `raw` and `send`
 - create new item (in postman for now cuz there's no UI)
 ## /items/:id
 - get one itme
+
+# React
+- In client folder
+- ```
+  npm install react-router-dom
+  ```
+Create a component folder with `jsx` file
